@@ -5,6 +5,22 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C9B6620A1C6CAF910073D982"
+               BuildableName = "Swipe Keyboard 1.app"
+               BlueprintName = "Swipe Keyboard 1"
+               ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -12,7 +28,36 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C9B6621B1C6CAF910073D982"
+               BuildableName = "Swipe Keyboard 1Tests.xctest"
+               BlueprintName = "Swipe Keyboard 1Tests"
+               ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C9B662261C6CAF920073D982"
+               BuildableName = "Swipe Keyboard 1UITests.xctest"
+               BlueprintName = "Swipe Keyboard 1UITests"
+               ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C9B6620A1C6CAF910073D982"
+            BuildableName = "Swipe Keyboard 1.app"
+            BlueprintName = "Swipe Keyboard 1"
+            ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -26,6 +71,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C9B6620A1C6CAF910073D982"
+            BuildableName = "Swipe Keyboard 1.app"
+            BlueprintName = "Swipe Keyboard 1"
+            ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -35,6 +90,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C9B6620A1C6CAF910073D982"
+            BuildableName = "Swipe Keyboard 1.app"
+            BlueprintName = "Swipe Keyboard 1"
+            ReferencedContainer = "container:Swipe Keyboard 1.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

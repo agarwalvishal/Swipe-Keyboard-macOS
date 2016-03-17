@@ -475,6 +475,7 @@
 				C9B662321C6CAF920073D982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9B662331C6CAF920073D982 /* Build configuration list for PBXNativeTarget "Swipe Keyboard 1Tests" */ = {
 			isa = XCConfigurationList;
@@ -483,6 +484,7 @@
 				C9B662351C6CAF920073D982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9B662361C6CAF920073D982 /* Build configuration list for PBXNativeTarget "Swipe Keyboard 1UITests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +493,7 @@
 				C9B662381C6CAF920073D982 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

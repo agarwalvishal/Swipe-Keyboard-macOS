@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="6198" systemVersion="14A297b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6198"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -641,12 +644,12 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Swipe_Keyboard_1" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
-        <!--Window Controller - Window-->
+        <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
@@ -667,15 +670,80 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Swipe_Keyboard_1" customModuleProvider="target" sceneMemberID="viewController">
+                    <customView key="view" id="iaQ-RD-4Gb" userLabel="myView">
+                        <rect key="frame" x="0.0" y="0.0" width="728" height="293"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="am5-zP-yab">
+                                <rect key="frame" x="0.0" y="0.0" width="728" height="293"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="keyboardSmall" id="00X-ce-iB9"/>
+                            </imageView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="sil-Bq-pEO">
+                                <rect key="frame" x="0.0" y="250" width="728" height="43"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x8O-45-ok6" userLabel="Label1">
+                                        <rect key="frame" x="13" y="11" width="217" height="21"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="hey" id="I4P-OU-zil">
+                                            <font key="font" size="15" name="HelveticaNeue"/>
+                                            <color key="textColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F6Q-Ru-Gtt" userLabel="Label2">
+                                        <rect key="frame" x="256" y="11" width="216" height="21"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="hey what's up" id="wfT-kn-SaE">
+                                            <font key="font" size="15" name="HelveticaNeue"/>
+                                            <color key="textColor" red="0.32549019610000002" green="0.32549019610000002" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kxt-Zr-ejS" userLabel="Label3">
+                                        <rect key="frame" x="498" y="11" width="217" height="21"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="what" id="1MQ-oH-noP">
+                                            <font key="font" size="15" name="HelveticaNeue"/>
+                                            <color key="textColor" red="0.32549019610000002" green="0.32549019610000002" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="F6Q-Ru-Gtt" firstAttribute="width" secondItem="x8O-45-ok6" secondAttribute="width" id="9yB-l5-HL4"/>
+                                    <constraint firstItem="F6Q-Ru-Gtt" firstAttribute="centerY" secondItem="sil-Bq-pEO" secondAttribute="centerY" id="IcF-tZ-suw"/>
+                                    <constraint firstItem="Kxt-Zr-ejS" firstAttribute="width" secondItem="x8O-45-ok6" secondAttribute="width" id="M5I-CH-b26"/>
+                                    <constraint firstItem="F6Q-Ru-Gtt" firstAttribute="leading" secondItem="x8O-45-ok6" secondAttribute="trailing" constant="30" id="V8e-mm-bH5"/>
+                                    <constraint firstItem="Kxt-Zr-ejS" firstAttribute="height" secondItem="x8O-45-ok6" secondAttribute="height" id="XNp-PS-UAo"/>
+                                    <constraint firstItem="F6Q-Ru-Gtt" firstAttribute="height" secondItem="x8O-45-ok6" secondAttribute="height" id="bb9-Cp-vhU"/>
+                                    <constraint firstItem="x8O-45-ok6" firstAttribute="baseline" secondItem="F6Q-Ru-Gtt" secondAttribute="baseline" id="cSp-x1-2zD"/>
+                                    <constraint firstItem="Kxt-Zr-ejS" firstAttribute="leading" secondItem="F6Q-Ru-Gtt" secondAttribute="trailing" constant="30" id="h8T-47-hbC"/>
+                                    <constraint firstItem="F6Q-Ru-Gtt" firstAttribute="baseline" secondItem="Kxt-Zr-ejS" secondAttribute="baseline" id="olS-Lz-Rbr"/>
+                                    <constraint firstItem="x8O-45-ok6" firstAttribute="leading" secondItem="sil-Bq-pEO" secondAttribute="leading" constant="15" id="tcE-4R-5U2"/>
+                                    <constraint firstAttribute="trailing" secondItem="Kxt-Zr-ejS" secondAttribute="trailing" constant="15" id="zbx-Y9-Nxr"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="am5-zP-yab" firstAttribute="width" secondItem="iaQ-RD-4Gb" secondAttribute="width" id="5Qd-y5-TP5"/>
+                            <constraint firstItem="sil-Bq-pEO" firstAttribute="leading" secondItem="iaQ-RD-4Gb" secondAttribute="leading" id="6aI-4k-sAt"/>
+                            <constraint firstItem="sil-Bq-pEO" firstAttribute="width" secondItem="iaQ-RD-4Gb" secondAttribute="width" id="A3q-dG-paX"/>
+                            <constraint firstItem="am5-zP-yab" firstAttribute="height" secondItem="iaQ-RD-4Gb" secondAttribute="height" id="DRZ-HI-aIm"/>
+                            <constraint firstItem="sil-Bq-pEO" firstAttribute="height" secondItem="iaQ-RD-4Gb" secondAttribute="height" multiplier="0.147" id="LKN-Y2-x7L"/>
+                            <constraint firstItem="sil-Bq-pEO" firstAttribute="top" secondItem="iaQ-RD-4Gb" secondAttribute="top" id="ZEZ-pd-et4"/>
+                            <constraint firstItem="am5-zP-yab" firstAttribute="top" secondItem="iaQ-RD-4Gb" secondAttribute="top" id="odg-S9-QKG"/>
+                            <constraint firstItem="am5-zP-yab" firstAttribute="width" secondItem="iaQ-RD-4Gb" secondAttribute="height" multiplier="727:293" id="vIl-FH-h3B"/>
+                            <constraint firstItem="am5-zP-yab" firstAttribute="leading" secondItem="iaQ-RD-4Gb" secondAttribute="leading" id="vk7-uc-m2m"/>
+                        </constraints>
+                    </customView>
+                    <connections>
+                        <outlet property="myView" destination="iaQ-RD-4Gb" id="dCJ-Il-XdA"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="712.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="keyboardSmall" width="1200" height="483"/>
+    </resources>
 </document>
