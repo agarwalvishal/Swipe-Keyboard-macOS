@@ -7,9 +7,14 @@
 //
 
 import Cocoa
+import CoreGraphics
 
 class ViewController: NSViewController {
     @IBOutlet var myView: NSView!
+    @IBOutlet var Label1: NSTextField!
+    @IBOutlet var Label2: NSTextField!
+    @IBOutlet var Label3: NSTextField!
+    @IBOutlet var myKeboardImage: NSImageView!
     var initialTouches = [NSTouch]()
     var currentTouches = [NSTouch]()
     var isTracking = true
@@ -24,7 +29,15 @@ class ViewController: NSViewController {
     var isTappingASingleCharacter = false
     var singleTappedCharacter: Character = "a"
     var noOfTouches = 0
-
+    var singleTappedString: String = ""
+    var isUppercase: Bool = false
+    var isNumeric: Bool = false
+    var isSymbol: Bool = false
+    var indexOfKeysForKeyboardBehaviour: [Int] = [0,0]
+    let editorPath = "/Users/vishal/Desktop/output.txt"
+    var isPreviousSwipe: Bool = false
+    var prevoiusSwipeWordCount: Int = 0
+    
     var xGap: CGFloat = 15.6
     var yGap: CGFloat = 15.6
     var keyWidth: CGFloat = 88.7
@@ -35,7 +48,9 @@ class ViewController: NSViewController {
     var commaKeyWidth: CGFloat = 0
     var spacebarKeyWidth: CGFloat = 0
     
-    let swipeKeyboardKeys: [String] = ["qwertyuiop~","asdfghjkl~","~zxcvbnm~~~","~~~~~~~"]
+    let swipeKeyboardKeys: [String] = ["~~~","qwertyuiop\u{8}","asdfghjkl\n","~zxcvbnm?!~","~~, .~~"]
+    let swipeKeyboardNumericKeys: [String] = ["~~~","1234567890\u{8}","@$&_():;\"\n","~*-#=/+'?!~","~~, .~~"]
+    let swipeKeyboardSymbolKeys: [String] = ["~~~","•™®`^¥op{}\u{8}","asdfghjkl\n","~zxcvbnm?!~","~~, .~~"]
     
     func initializeVariables() {
         xGap = 15.6 / 1198 * myViewWidth
@@ -53,9 +68,10 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         myView.acceptsTouchEvents = true
-
+        //createCustomKeyboardEvent()
         // Do any additional setup after loading the view.
     }
+    
 
     override var representedObject: AnyObject? {
         didSet {
@@ -64,16 +80,92 @@ class ViewController: NSViewController {
     }
     func returnKeyValue(indexOfKeys: [Int]) -> Character
     {
-        var currentRow = indexOfKeys[0] - 1
-        var currentColumn = indexOfKeys[1] - 1
+        let currentRow = indexOfKeys[0] //- 1
+        let currentColumn = indexOfKeys[1] - 1
         if currentRow >= 0 && currentColumn >= 0 {
             var myKeyboardRow = swipeKeyboardKeys[currentRow]
-            var index = myKeyboardRow.startIndex.advancedBy(currentColumn)
-            var myKey = myKeyboardRow[index]
+            if isNumeric == true {
+                myKeyboardRow = swipeKeyboardNumericKeys[currentRow]
+            }
+            if isSymbol == true {
+                myKeyboardRow = swipeKeyboardSymbolKeys[currentRow]
+            }
+            let index = myKeyboardRow.startIndex.advancedBy(currentColumn)
+            let myKey = myKeyboardRow[index]
             return myKey
         }
         return "~"
     }
+    
+    func changeKeyboardBehaviour(indexOfSpecialKey: [Int]) {
+        
+        if (indexOfSpecialKey[0] == 3 && indexOfSpecialKey[1] == 1) || (indexOfSpecialKey[0] == 3 && indexOfSpecialKey[1] == 11) {
+            
+            // Symbol keypad key is pressed
+            
+            if isNumeric == true && isSymbol == false {
+                myKeboardImage.image = NSImage(named: "keyboardSymbol")
+                isSymbol = true
+            }
+            else if isNumeric == true && isSymbol == true {
+                myKeboardImage.image = NSImage(named: "keyboardNumeric")
+                isSymbol = false
+            }
+                
+            // Capslock key is pressed
+                
+            else {
+                isSymbol = false
+                if isUppercase == false {
+                    myKeboardImage.image = NSImage(named: "keyboardCaps")
+                    isUppercase = true
+                }
+                else {
+                    myKeboardImage.image = NSImage(named: "keyboardSmall")
+                    isUppercase = false
+                }
+            }
+        }
+        
+        // Numeric keypad key is pressed
+        
+        if (indexOfSpecialKey[0] == 4 && indexOfSpecialKey[1] == 2) || (indexOfSpecialKey[0] == 4 && indexOfSpecialKey[1] == 6) {
+            isUppercase = false
+            isSymbol = false
+            if isNumeric == false {
+                myKeboardImage.image = NSImage(named: "keyboardNumeric")
+                isNumeric = true
+            }
+            else {
+                myKeboardImage.image = NSImage(named: "keyboardSmall")
+                isNumeric = false
+            }
+        }
+        
+        // Word in suggestion box is selected
+        
+        if indexOfSpecialKey[0] == 0 && isPreviousSwipe == true{
+            var toTextFileObj = ToTextFile()
+            var wordString = toTextFileObj.getWords(editorPath)
+            wordString = toTextFileObj.deleteLastWordFromTextFile(wordString, previousSwipeWordCount: prevoiusSwipeWordCount)
+            if indexOfSpecialKey[1] == 1 && !Label1.stringValue.isEmpty {
+                wordString = wordString + Label1.stringValue + " "
+                toTextFileObj.insertWord(wordString, path : editorPath)
+            }
+            else if indexOfSpecialKey[1] == 2 && !Label2.stringValue.isEmpty {
+                wordString = wordString + Label2.stringValue + " "
+                toTextFileObj.insertWord(wordString, path : editorPath)
+            }
+            else if indexOfSpecialKey[1] == 3 && !Label3.stringValue.isEmpty {
+                wordString = wordString + Label3.stringValue + " "
+                toTextFileObj.insertWord(wordString, path : editorPath)
+            }
+            Label1.stringValue = ""
+            Label2.stringValue = ""
+            Label3.stringValue = ""
+        }
+    }
+    
     override func touchesBeganWithEvent(event: NSEvent) {
         myString = ""
         initialKey = "~"
@@ -96,11 +188,24 @@ class ViewController: NSViewController {
             isTappingASingleCharacter = true
             singleTappedCharacter = "~"
             
-            var indexOfKeys = returnCellPosition(xPos, yPoint: yPos)
+            let indexOfKeys = returnCellPosition(xPos, yPoint: yPos)
+            indexOfKeysForKeyboardBehaviour = indexOfKeys
             singleTappedCharacter = returnKeyValue(indexOfKeys)
+            
+//            var myRect = NSRect(x: 0, y: 0, width: myViewWidth, height: myViewHeight)
+//            
+//            var path : NSBezierPath = NSBezierPath(rect: myRect)
+//            let color = NSColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+//            color.set()
+//            path.moveToPoint(NSPoint(x: xPos,y: yPos))
+//            path.lineToPoint(NSPoint(x: 10,y: 10))
+//            path.lineWidth = 5.0
+//            path.stroke()
         }
         
         if(touches.count == 3) {
+            
+            singleTappedString = ""
             
             let array: NSArray = touches.allObjects
             
@@ -208,7 +313,7 @@ class ViewController: NSViewController {
         var indexOfKey: [Int] = [0,0]
         
         //determines row number
-        for( var currentRow = 4; currentRow >= 0; currentRow--) {
+        for var currentRow = 4; currentRow >= 0; currentRow-- {
             if yPoint >= y && yPoint <= y+keyHeight {
                 myRow = currentRow
                 break
@@ -264,7 +369,7 @@ class ViewController: NSViewController {
         //            return
         //        }
         //        modifiers = event.modifierFlags
-        var touches: NSSet = event.touchesMatchingPhase(NSTouchPhase.Touching, inView: myView)
+        let touches: NSSet = event.touchesMatchingPhase(NSTouchPhase.Touching, inView: myView)
         
         isTappingASingleCharacter = false
         
@@ -273,23 +378,148 @@ class ViewController: NSViewController {
             let xPos = initialPoint.x
             let yPos = initialPoint.y
             
-            var indexOfKeys = returnCellPosition(xPos, yPoint: yPos)
-            var currentKey = returnKeyValue(indexOfKeys)
+            let indexOfKeys = returnCellPosition(xPos, yPoint: yPos)
+            let currentKey = returnKeyValue(indexOfKeys)
             characterAppend(currentKey)
             //            print(initialPoint)
         }
     }
     
+    func updateLabel() {
+        let obj = wordExtraction()
+        var filteredWords:[String] = []
+        filteredWords = obj.mainProcess(myString)
+        Label1.stringValue = ""
+        Label2.stringValue = ""
+        Label3.stringValue = ""
+        if isUppercase == false {
+            if filteredWords.count >= 1 {
+                Label1.stringValue = filteredWords[0]
+            }
+            if filteredWords.count >= 2 {
+                Label2.stringValue = filteredWords[1]
+            }
+            if filteredWords.count >= 3 {
+                Label3.stringValue = filteredWords[2]
+            }
+        }
+        else if isUppercase == true {
+            if filteredWords.count >= 1 {
+                Label1.stringValue = filteredWords[0].uppercaseString
+            }
+            if filteredWords.count >= 2 {
+                Label2.stringValue = filteredWords[1].uppercaseString
+            }
+            if filteredWords.count >= 3 {
+                Label3.stringValue = filteredWords[2].uppercaseString
+            }
+        }
+    }
+    
+    func isCharacterPunctuation(character: Character) -> Bool {
+        
+        if ((character >= "a" && character <= "z") || (character >= "A" && character <= "Z")){
+            return false
+        }
+        return true
+    }
+    
+    func appendSingleCharacterToTextFile(character: Character) {
+        var toTextFileObj = ToTextFile()
+        var wordString = toTextFileObj.getWords(editorPath)
+        
+        wordString.append(character)
+        
+        toTextFileObj.insertWord(wordString,path : editorPath)
+    }
     
     override func touchesEndedWithEvent(event: NSEvent) {
         if(isTappingASingleCharacter == true && noOfTouches == 1) {
-            if singleTappedCharacter != "~"{
+            if singleTappedCharacter != "~" {
                 print(singleTappedCharacter)
+                
+                //backspace checking
+                if singleTappedCharacter == "\u{8}" {
+                    
+                    // Backspace handling in Text File
+                    
+                    if isPreviousSwipe == true {
+                        var toTextFileObj = ToTextFile()
+                        var wordString = toTextFileObj.getWords(editorPath)
+                        wordString = toTextFileObj.deleteLastWordFromTextFile(wordString, previousSwipeWordCount: prevoiusSwipeWordCount)
+                        toTextFileObj.insertWord(wordString,path : editorPath)
+                    }
+                    else {
+                        var toTextFileObj = ToTextFile()
+                        var wordString = toTextFileObj.getWords(editorPath)
+                        wordString = String(wordString.characters.dropLast())
+                        toTextFileObj.insertWord(wordString,path : editorPath)
+                    }
+                    
+                    // Backspace functioning in the label
+                    
+                    if singleTappedString.characters.count != 0 {
+                        singleTappedString = String(singleTappedString.characters.dropLast())
+                    }
+                    Label1.stringValue = singleTappedString
+                    Label2.stringValue = ""
+                    Label3.stringValue = ""
+                }
+                else if isCharacterPunctuation(singleTappedCharacter) == false{
+                    
+                        if isUppercase == false {
+                            singleTappedString.append(singleTappedCharacter)
+                            appendSingleCharacterToTextFile(singleTappedCharacter)
+                        }
+                        else if isUppercase == true {
+                            var tempString: String = ""
+                            tempString.append(singleTappedCharacter)
+                            tempString = tempString.uppercaseString
+                            singleTappedString.append(tempString[tempString.startIndex])
+                            appendSingleCharacterToTextFile(tempString[tempString.startIndex])
+                        }
+                    Label1.stringValue = singleTappedString
+                    Label2.stringValue = ""
+                    Label3.stringValue = ""
+                }
+                else {
+                    let obj =  wordInsertion()
+                    if singleTappedString.characters.count != 0 {
+                        obj.insertWord(singleTappedString)
+                    }
+                    singleTappedString = ""
+                    
+                    // Append punctuation to the text file
+                    var toTextFileObj = ToTextFile()
+                    var wordString = toTextFileObj.getWords(editorPath)
+                    if wordString[wordString.endIndex.predecessor()] == " " {
+                        wordString = String(wordString.characters.dropLast())
+                        wordString.append(singleTappedCharacter)
+                        toTextFileObj.insertWord(wordString, path: editorPath)
+                    }
+                    else {
+                        appendSingleCharacterToTextFile(singleTappedCharacter)
+                    }
+                }
+            }
+            else {
+                changeKeyboardBehaviour(indexOfKeysForKeyboardBehaviour)
             }
             isTappingASingleCharacter = false
+            isPreviousSwipe = false
         }
         else if (!myString.isEmpty && noOfTouches == 3){
             print(myString)
+            updateLabel()
+            var toTextFileObj = ToTextFile()
+            var wordString = toTextFileObj.getWords(editorPath)
+            
+            if !Label1.stringValue.isEmpty{
+                wordString = wordString + Label1.stringValue + " "
+            }
+            toTextFileObj.insertWord(wordString,path : editorPath)
+            isPreviousSwipe = true
+            prevoiusSwipeWordCount = Label1.stringValue.characters.count
         }
         noOfTouches = 0
     }
@@ -309,4 +539,3 @@ class ViewController: NSViewController {
         return delta;
     }
 }
-
